@@ -19,9 +19,8 @@ export default function SignInForm() {
       email: email,
       password: password
     }
-    
+    navigate("/home")
   }
-  
   return (
     <FormContainer onSubmit={handleLogin}>
       
