@@ -21,7 +21,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
-	background-color: #9567BE;
+	background-color: #8c11be;
 	text-decoration: none;
 }
 /* HTML5 display-role reset for older browsers */

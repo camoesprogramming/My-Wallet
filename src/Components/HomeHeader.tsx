@@ -21,6 +21,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 25px;
+  
   h1 {
     font-family: 'Raleway';
     font-size: 26px;
@@ -29,7 +30,6 @@ const Container = styled.div`
     letter-spacing: 0em;
     text-align: left;
     color: #FFFFFF;
-
   }
   
 `
