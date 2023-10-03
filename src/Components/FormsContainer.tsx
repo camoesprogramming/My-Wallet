@@ -50,5 +50,10 @@ const Container = styled.div`
     text-align: left;
     color: #f9f9f9;
     margin-top: 32px;
+    background-color: #9567BE;
+  }
+  
+  a {
+    background-color: #9567BE;
   }
 `;
