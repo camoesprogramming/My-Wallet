@@ -26,7 +26,7 @@ export default function AuthenticationProvider({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localUserData === null) {
+    if (localUserData === null || {token: ""}) {
       navigate("/");
     } else {
       navigate("/home");
