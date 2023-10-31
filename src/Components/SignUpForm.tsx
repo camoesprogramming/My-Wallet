@@ -55,7 +55,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #9567be;
+  background-color: #8c1cbe;
   width: 80%;
 
   input,

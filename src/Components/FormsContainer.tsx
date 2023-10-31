@@ -31,12 +31,12 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #9567be;
+  background-color: #8c1cbe;
 
   h1 {
     font-family: Saira Stencil One;
     color: #f9f9f9;
-    background-color: #9567be;
+    background-color: #8c1cbe;
     font-size: 32px;
     margin-bottom: 24px;
   }
@@ -50,10 +50,10 @@ const Container = styled.div`
     text-align: left;
     color: #f9f9f9;
     margin-top: 32px;
-    background-color: #9567BE;
+    background-color: #8c1cbe;
   }
   
-  a {
-    background-color: #9567BE;
-  }
+    a {
+      background-color: #8c1cbe;
+    }
 `;

@@ -50,7 +50,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #9567BE;
+  background-color: #8c1cbe;
   width: 80%;
 
   input, button {
@@ -71,7 +71,7 @@ const FormContainer = styled.form`
   }
 
   button {
-    background-color: #A328D6;
+    background-color: #a328d6;
     color: #f9f9f9;
     font-family: 'Raleway';
     font-size: 20px;
