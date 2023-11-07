@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
-import { TokenContext } from "../Contexts/TokenContext";
+import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
 
 type userInfo = {
   email: string;
@@ -14,7 +14,7 @@ export default function SignInForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-  const { setToken, setName } = useContext(TokenContext);
+  const { setToken, setName } = useContext(TokenAndNameContext);
   const [alertError, setAlertError] = useState<Boolean>(false)
 
   function handleLogin(event: React.FormEvent<HTMLFormElement>) {

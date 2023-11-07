@@ -4,12 +4,12 @@ import SignUp from "./Pages/SignUp";
 import Home from "./Pages/Home";
 import NewIncome from "./Pages/NewIncome";
 import NewExpense from "./Pages/NewExpense";
-import { TokenContextProvider } from "./Contexts/TokenContext";
+import { TokenAndNameContextProvider } from "./Contexts/TokenAndNameContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <TokenContextProvider>
+      <TokenAndNameContextProvider>
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/signUp" element={<SignUp />} />
@@ -17,7 +17,7 @@ function App() {
           <Route path="/new-income" element={<NewIncome />} />
           <Route path="/new-expense" element={<NewExpense />} />
         </Routes>
-      </TokenContextProvider>
+      </TokenAndNameContextProvider>
     </BrowserRouter>
   );
 }

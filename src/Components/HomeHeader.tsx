@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { TokenContext } from "../Contexts/TokenContext";
+import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
 
 export default function HomeHeader() {
-  const {name} = useContext(TokenContext);
-  console.log(name)
+  const {name} = useContext(TokenAndNameContext);
+  
   return (
     <Container>
       <h1>Olá, {name}!</h1>
