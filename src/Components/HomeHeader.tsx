@@ -2,11 +2,15 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { TokenContext } from "../Contexts/TokenContext";
 
 export default function HomeHeader() {
+  const {name} = useContext(TokenContext);
+  console.log(name)
   return (
     <Container>
-      <h1>Olá, fulano!</h1>
+      <h1>Olá, {name}!</h1>
       <Link to="/">
         <FontAwesomeIcon
           icon={faRightFromBracket}

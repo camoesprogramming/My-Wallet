@@ -34,7 +34,7 @@ const Container = styled.div`
   background-color: #8c1cbe;
 
   h1 {
-    font-family: Saira Stencil One;
+    font-family: "Saira Stencil One";
     color: #f9f9f9;
     background-color: #8c1cbe;
     font-size: 32px;
@@ -49,7 +49,7 @@ const Container = styled.div`
     letter-spacing: 0em;
     text-align: left;
     color: #f9f9f9;
-    margin-top: 32px;
+    margin-top: 18px;
     background-color: #8c1cbe;
   }
   
