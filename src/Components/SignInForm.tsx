@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
+import { baseUrl } from "../Constants/url";
 
 type userInfo = {
   email: string;
@@ -15,7 +16,7 @@ export default function SignInForm() {
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const { setToken, setName } = useContext(TokenAndNameContext);
-  const [alertError, setAlertError] = useState<Boolean>(false)
+  const [alertError, setAlertError] = useState<Boolean>(false);
 
   function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,13 +25,17 @@ export default function SignInForm() {
       email: email,
       password: password,
     };
-    const baseUrl = "http://localhost:5888/sign-in";
 
-    const promise = axios.post(baseUrl, userData);
+    const link = `${baseUrl}sign-in`;
+
+    const promise = axios.post(link, userData);
     promise
-      .then((response) => {setToken(response.data.token); setName(response.data.name);navigate("/home")})
+      .then((response) => {
+        setToken(response.data.token);
+        setName(response.data.name);
+        navigate("/home");
+      })
       .catch((error) => setAlertError(true));
-    
   }
   return (
     <FormContainer onSubmit={handleLogin}>
@@ -97,7 +102,7 @@ const FormContainer = styled.form`
     margin-top: 10px;
   }
   p {
-    color: #FF0000;
+    color: #ff0000;
     margin-top: 0px;
     margin-bottom: 10px;
   }

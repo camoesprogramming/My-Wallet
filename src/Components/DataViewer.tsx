@@ -1,71 +1,46 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { baseUrl } from "../Constants/url";
+import FinancialRecord from "./FinancialRecord";
 
-type Data = {
-  date: string;
-  description: string;
-  value: string;
-  income: string;
+export type DataType = {
   id: string;
+  income: string;
+  value: string;
+  description: string;
+  date: string;
 };
 
 export default function DataViewer() {
-  let DataExample: Data[] = [
-    {
-      date: "30/11",
-      description: "Almoço com mãe",
-      value: "45.90",
-      income: "false",
-      id: "1",
-    },
-    {
-      date: "02/12",
-      description: "Compras de supermercado",
-      value: "120.50",
-      income: "true",
-      id: "2",
-    },
-    {
-      date: "15/12",
-      description: "Jantar com amigos",
-      value: "75.00",
-      income: "false",
-      id: "3",
-    },
-    {
-      date: "20/12",
-      description: "Gasolina",
-      value: "60.30",
-      income: "true",
-      id: "4",
-    },
-    {
-      date: "25/12",
-      description: "Presentes de Natal",
-      value: "200.00",
-      income: "false",
-      id: "5",
-    },
-  ];
+  const { token } = useContext(TokenAndNameContext);
+  const link = `${baseUrl}financial-records`;
+  const [data, setData] = useState<DataType[] | undefined>(undefined);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get(link, config);
+    promise
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => alert(err.message.detail));
+  }, []);
 
   return (
-    <Container justify={DataExample ? "start" : "center"}>
-      {!DataExample && <h1>Não há registros de entrada ou saída</h1>}
+    <Container justify={data ? "start" : "center"}>
+      {!data && <h1>Não há registros de entrada ou saída</h1>}
 
-      {DataExample.map((e) => (
-        <StyledData
-          color={e.income === "true" ? "#03AC00" : "#C70000"}
-          key={e.id}
-        >
-          <p>
-            <span>{e.date}</span> {e.description}
-          </p>
-          <div>
-            <p>{e.value.replace(".", ",")}</p>
-            <FontAwesomeIcon icon={faXmark} size="2xs" style={{color: "#000000"}} />
-          </div>
-        </StyledData>
+      {data?.map((e) => (
+        <FinancialRecord key={e.id} {...e}></FinancialRecord>
       ))}
     </Container>
   );
@@ -120,7 +95,6 @@ const StyledData = styled.div<{ color: string }>`
     padding-right: 20px;
   }
 
-  
   div {
     background-color: #fff;
     display: flex;
@@ -131,7 +105,5 @@ const StyledData = styled.div<{ color: string }>`
       color: ${(props) => props.color};
       margin-right: 8px;
     }
-
-
   }
 `;
