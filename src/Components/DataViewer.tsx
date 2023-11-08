@@ -32,7 +32,7 @@ export default function DataViewer() {
       .then((res) => {
         setData(res.data);
       })
-      .catch((err) => alert(err.message.detail));
+      .catch((err) => alert("Erro ao conectar com o servidor: \n" + err ));
   }, []);
 
   return (

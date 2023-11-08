@@ -1,23 +1,36 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
+import { baseUrl } from "../Constants/url";
+import axios from "axios";
 
 export default function HomeHeader() {
-  const {name} = useContext(TokenAndNameContext);
-  
+  const { name, token } = useContext(TokenAndNameContext);
+  const navigate = useNavigate();
+
+  function killSession() {
+    let link = `${baseUrl}logout`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const promise = axios.delete(link, config);
+    promise.then((response) => navigate("/")).catch();
+  }
+
   return (
     <Container>
       <h1>Olá, {name}!</h1>
-      <Link to="/">
-        <FontAwesomeIcon
-          icon={faRightFromBracket}
-          size="2xl"
-          style={{ color: "#ffffff" }}
-        />
-      </Link>
+      <FontAwesomeIcon
+        icon={faRightFromBracket}
+        size="2xl"
+        style={{ color: "#ffffff" }}
+        onClick={killSession}
+      />
     </Container>
   );
 }
