@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -32,12 +31,17 @@ export default function DataViewer() {
       .then((res) => {
         setData(res.data);
       })
-      .catch((err) => alert("Erro ao conectar com o servidor: \n" + err ));
+      .catch((err) => {
+        if (err.response.status === 404) {
+          setData([])
+        }
+        alert("Erro ao conectar com o servidor: \n" + err);
+      });
   }, []);
 
   return (
-    <Container justify={data ? "start" : "center"}>
-      {!data && <h1>Não há registros de entrada ou saída</h1>}
+    <Container justify={data?.length !== 0  ? "start" : "center"}>
+      {data?.length === 0 && <h1>Não há registros de entrada ou saída</h1>}
 
       {data?.map((e) => (
         <FinancialRecord key={e.id} {...e}></FinancialRecord>
