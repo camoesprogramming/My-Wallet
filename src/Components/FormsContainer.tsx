@@ -49,7 +49,7 @@ const Container = styled.div`
     letter-spacing: 0em;
     text-align: left;
     color: #f9f9f9;
-    margin-top: 18px;
+    margin-top: 8px;
     background-color: #8c1cbe;
   }
   

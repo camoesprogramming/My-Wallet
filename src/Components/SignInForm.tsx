@@ -17,6 +17,7 @@ export default function SignInForm() {
   const navigate = useNavigate();
   const { setToken, setName } = useContext(TokenAndNameContext);
   const [alertError, setAlertError] = useState<Boolean>(false);
+  const [alertConnection, setAlertConnection] = useState<Boolean>(false);
 
   function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,7 +36,13 @@ export default function SignInForm() {
         setName(response.data.name);
         navigate("/home");
       })
-      .catch((error) => setAlertError(true));
+      .catch((error) => {
+        if (error.response && error.response.status === 422) {
+          setAlertError(true);
+        } else {
+          setAlertConnection(true);
+        }
+      });
   }
   return (
     <FormContainer onSubmit={handleLogin}>
@@ -56,6 +63,7 @@ export default function SignInForm() {
         onChange={(e) => setPassword(e.target.value)}
       ></input>
       {alertError && <p>E-mail ou senha incorretos!</p>}
+      {alertConnection && <p>Erro de conexão com o servidor</p>}
       <button>Entrar</button>
     </FormContainer>
   );
@@ -100,6 +108,7 @@ const FormContainer = styled.form`
     height: 46px;
     border-radius: 5px;
     margin-top: 10px;
+    margin-bottom: 20px;
   }
   p {
     color: #ff0000;
