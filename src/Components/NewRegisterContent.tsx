@@ -17,7 +17,7 @@ export default function NewRegisterContent({ income }: { income: boolean }) {
           />
         </Link>
       </div>
-      <RegisterContentForm income = {income} />
+      <RegisterContentForm income={income} />
     </Container>
   );
 }

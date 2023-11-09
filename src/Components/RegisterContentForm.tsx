@@ -1,35 +1,55 @@
 import styled from "styled-components";
-import React, { ReactEventHandler, useState } from "react";
+import React, { ReactEventHandler, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../Constants/url";
+import axios from "axios";
+import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
 
-export default function RegisterContentForm( { income }: { income: boolean }) {
-  const [value, setValue] = useState<Number | null >();
+export default function RegisterContentForm({ income }: { income: boolean }) {
+  const [value, setValue] = useState<Number | null>();
   const [description, setDescription] = useState<String | null>();
-
-  const navigate=useNavigate();
+  const { token } = useContext(TokenAndNameContext);
+  const navigate = useNavigate();
 
   function handleForm(event: React.ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
+    const link = `${baseUrl}new-input`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
+    const data = {
+      income: income,
+      value: value,
+      description: description,
+    };
 
-
-    navigate("/home")
+    const promise = axios.post(link, data, config);
+    promise
+      .then((res) => navigate("/home"))
+      .catch((err) => alert("Error sending data"));
   }
   return (
     <FormContainer onSubmit={handleForm}>
       <input
         type="number"
+        step="0.01"
         placeholder="Value"
         name="Value"
-        id="value"
-        onChange={(e) => (setValue(parseFloat(e.target.value)))}
+        id="Value"
+        onChange={(e) => {
+          const sanitizedValue = e.target.value.replace(",", ".");
+          setValue(parseFloat(sanitizedValue));
+        }}
       />
       <input
         type="text"
         placeholder="Description"
         name="Description"
         id="description"
-        onChange={(e) => (setDescription(e.target.value))}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <button>Register {income === true ? "Income" : "Expense"}</button>
     </FormContainer>
