@@ -4,7 +4,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { DataType } from "./DataViewer";
 
 export default function FinancialRecord(data: DataType) {
-  console.log(typeof(data.income))
+  
   return (
     <StyledData color={data.income === true ? "#03AC00" : "#C70000"}>
       <p>

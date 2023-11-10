@@ -15,11 +15,45 @@ export type DataType = {
   date: string;
 };
 
+type ResultType = {
+  result: number;
+  color: "#03AC00" | "#C70000" | undefined;
+};
+
 export default function DataViewer() {
   const { token } = useContext(TokenAndNameContext);
   const link = `${baseUrl}financial-records`;
   const [data, setData] = useState<DataType[] | undefined>(undefined);
+  const [result, setResult] = useState<ResultType | undefined>(undefined);
   const navigate = useNavigate();
+
+  function calculateTotalValue(array: DataType[]): ResultType {
+    let sumIncome = 0;
+    let sumExpense = 0;
+    let result = 0;
+    let color: "#03AC00" | "#C70000" | undefined = undefined;
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].income === true) {
+        sumIncome += parseFloat(array[i].value);
+      } else {
+        sumExpense += parseFloat(array[i].value);
+      }
+    }
+    if (sumIncome > sumExpense) {
+      result = sumIncome - sumExpense;
+      color = "#03AC00";
+    } else {
+      result = sumExpense - sumIncome;
+      color = "#C70000";
+    }
+
+    return {
+      result: result,
+      color: color,
+    };
+  }
+
   useEffect(() => {
     const config = {
       headers: {
@@ -31,6 +65,7 @@ export default function DataViewer() {
     promise
       .then((res) => {
         setData(res.data);
+        setResult(calculateTotalValue(res.data));
       })
       .catch((err) => {
         if (err.response.status === 404) {
@@ -43,12 +78,17 @@ export default function DataViewer() {
   }, []);
 
   return (
-    <Container justify={data?.length !== 0 ? "start" : "center"}>
+    <Container
+      color={result?.color}
+      justify={data?.length !== 0 ? "start" : "center"}
+    >
       {data?.length === 0 && <h1>Não há registros de entrada ou saída</h1>}
 
       {data?.map((e) => (
         <FinancialRecord key={e.id} {...e}></FinancialRecord>
       ))}
+      <h2>Saldo</h2>
+      <h3>R$ {String(result?.result).replace(".", ",")}</h3>
     </Container>
   );
 }
@@ -60,13 +100,16 @@ const Container = styled.div<{ justify: string }>`
   height: 66vh;
   background-color: #fff;
   border-radius: 5px;
+  position: relative;
 
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => props.justify};
   align-items: center;
 
-  h1 {
+  h1,
+  h2,
+  h3 {
     font-family: "Raleway";
     font-size: 20px;
     font-weight: 400;
@@ -74,5 +117,20 @@ const Container = styled.div<{ justify: string }>`
     letter-spacing: 0em;
     text-align: center;
     background-color: #fff;
+  }
+
+  h2 {
+    position: absolute;
+    bottom: 0px;
+    left: 10px;
+    font-weight: bold;
+  }
+
+  h3 {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 17px;
+    color: ${(props) => props.color};
   }
 `;
