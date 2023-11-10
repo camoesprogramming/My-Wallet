@@ -33,14 +33,15 @@ export default function DataViewer() {
       })
       .catch((err) => {
         if (err.response.status === 404) {
-          setData([])
+          setData([]);
+        } else {
+          alert(err.response.data);
         }
-        alert("Erro ao conectar com o servidor: \n" + err);
       });
   }, []);
 
   return (
-    <Container justify={data?.length !== 0  ? "start" : "center"}>
+    <Container justify={data?.length !== 0 ? "start" : "center"}>
       {data?.length === 0 && <h1>Não há registros de entrada ou saída</h1>}
 
       {data?.map((e) => (
