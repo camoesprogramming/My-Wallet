@@ -17,7 +17,7 @@ export type DataType = {
 
 type ResultType = {
   result: number;
-  color: "#03AC00" | "#C70000" | undefined;
+  color: "#03AC00" | "#C70000" | "#000000" | undefined;
 };
 
 export default function DataViewer() {
@@ -25,13 +25,20 @@ export default function DataViewer() {
   const link = `${baseUrl}financial-records`;
   const [data, setData] = useState<DataType[] | undefined>(undefined);
   const [result, setResult] = useState<ResultType | undefined>(undefined);
+  const [deletedRecord, setDeletedRecord] = useState<string>("");
   const navigate = useNavigate();
-
-  function calculateTotalValue(array: DataType[]): ResultType {
+  
+  function calculateTotalValue(array: DataType[] | []): ResultType {
     let sumIncome = 0;
     let sumExpense = 0;
     let result = 0;
-    let color: "#03AC00" | "#C70000" | undefined = undefined;
+    let color: "#03AC00" | "#C70000" | "#000000" | undefined = undefined;
+    if (array.length === 0) {
+      return {
+        result,
+        color: "#000000",
+      };
+    }
 
     for (let i = 0; i < array.length; i++) {
       if (array[i].income === true) {
@@ -70,12 +77,23 @@ export default function DataViewer() {
       .catch((err) => {
         if (err.response.status === 404) {
           setData([]);
+          setResult(calculateTotalValue([]));
         } else {
           alert(err.response.data);
           navigate("/");
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (deletedRecord === "") return;
+    let newData = data?.filter((item) => item.id !== deletedRecord);
+    setData(newData);
+
+    if (newData !== undefined) {
+      setResult(calculateTotalValue(newData));
+    }
+  }, [deletedRecord]);
 
   return (
     <Container
@@ -85,7 +103,15 @@ export default function DataViewer() {
       {data?.length === 0 && <h1>Não há registros de entrada ou saída</h1>}
 
       {data?.map((e) => (
-        <FinancialRecord key={e.id} {...e}></FinancialRecord>
+        <FinancialRecord
+          key={e.id}
+          id={e.id}
+          income={e.income}
+          value={e.value}
+          description={e.description}
+          date={e.date}
+          setDeletedRecord={setDeletedRecord}
+        ></FinancialRecord>
       ))}
       <h2>Saldo</h2>
       <h3>R$ {String(result?.result).replace(".", ",")}</h3>
@@ -93,7 +119,7 @@ export default function DataViewer() {
   );
 }
 
-const Container = styled.div<{ justify: string }>`
+const Container = styled.div<{ justify: string; color?: string }>`
   margin: auto;
   margin-top: 28px;
   width: 90%;
