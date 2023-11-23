@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TokenAndNameContext } from "../Contexts/TokenAndNameContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -27,7 +26,7 @@ export default function DataViewer() {
   const [result, setResult] = useState<ResultType | undefined>(undefined);
   const [deletedRecord, setDeletedRecord] = useState<string>("");
   const navigate = useNavigate();
-  
+
   function calculateTotalValue(array: DataType[] | []): ResultType {
     let sumIncome = 0;
     let sumExpense = 0;
@@ -56,7 +55,7 @@ export default function DataViewer() {
     }
 
     return {
-      result: result,
+      result: parseFloat(result.toFixed(2)),
       color: color,
     };
   }
@@ -113,8 +112,10 @@ export default function DataViewer() {
           setDeletedRecord={setDeletedRecord}
         ></FinancialRecord>
       ))}
-      <h2>Saldo</h2>
-      <h3>R$ {String(result?.result).replace(".", ",")}</h3>
+      <section>
+        <h2>Saldo</h2>
+        <h3>R$ {String(result?.result).replace(".", ",")}</h3>
+      </section>
     </Container>
   );
 }
@@ -127,6 +128,7 @@ const Container = styled.div<{ justify: string; color?: string }>`
   background-color: #fff;
   border-radius: 5px;
   position: relative;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -146,17 +148,21 @@ const Container = styled.div<{ justify: string; color?: string }>`
   }
 
   h2 {
-    position: absolute;
-    bottom: 0px;
-    left: 10px;
     font-weight: bold;
   }
 
   h3 {
-    position: absolute;
-    bottom: 5px;
-    right: 10px;
     font-size: 17px;
     color: ${(props) => props.color};
   }
+  section {
+    display: flex;
+    background-color: #fff;
+    width: 95%;
+    margin-top: 10px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  
 `;
